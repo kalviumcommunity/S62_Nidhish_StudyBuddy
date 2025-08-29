@@ -1,5 +1,9 @@
 const express = require("express");
-const { zeroShot, oneShot } = require("./src/services/deepseek.service");
+const {
+  zeroShot,
+  oneShot,
+  multiShot,
+} = require("./src/services/deepseek.service");
 require("dotenv").config();
 
 const app = express();
@@ -18,5 +22,6 @@ app.get("/", (req, res) => {
 
 app.get("/zeroShot", zeroShot);
 app.get("/oneShot", oneShot);
+app.get("/multiShot", multiShot);
 
 module.exports = app;
