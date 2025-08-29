@@ -150,6 +150,25 @@ const SystemUserPrompt = async (req, res) => {
     return res.status(500).send({ message: "Internal server error" });
   }
 };
+const StopSequence = async (req, res) => {
+  try {
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: "List 3 fruits each seperate with a , in a csv format",
+        },
+      ],
+      model: "deepseek/deepseek-r1:free",
+      stop: [","],
+    });
+
+    return res.status(200).send({ message: completion.choices[0].message });
+  } catch (error) {
+    console.error("Error in  Stop sequence", error.message);
+    return res.status(500).send({ message: "Internal server error" });
+  }
+};
 
 module.exports = {
   zeroShot,
@@ -158,4 +177,5 @@ module.exports = {
   dynamicPrompt,
   COTPrompt,
   SystemUserPrompt,
+  StopSequence,
 };
