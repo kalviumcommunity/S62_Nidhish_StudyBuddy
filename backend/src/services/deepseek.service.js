@@ -86,5 +86,26 @@ Sentiment:
     return res.status(500).send({ message: "Internal server error" });
   }
 };
+const dynamicPrompt = async (req, res) => {
+  try {
+    const user_name = "Nidhish";
+    const city = "Delhi";
 
-module.exports = { zeroShot, oneShot, multiShot };
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: `Write a welcome message for ${user_name} who just signed up from ${city}.`,
+        },
+      ],
+      model: "deepseek/deepseek-r1:free",
+    });
+
+    return res.status(200).send({ message: completion.choices[0].message });
+  } catch (error) {
+    console.error("Error in  dynamic prompt", error.message);
+    return res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+module.exports = { zeroShot, oneShot, multiShot, dynamicPrompt };
