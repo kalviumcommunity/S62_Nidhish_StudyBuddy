@@ -107,5 +107,25 @@ const dynamicPrompt = async (req, res) => {
     return res.status(500).send({ message: "Internal server error" });
   }
 };
+const COTPrompt = async (req, res) => {
+  try {
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: `Q: If there are 12 apples and you eat 4, how many are left? 
+Explain your reasoning step by step.
+`,
+        },
+      ],
+      model: "deepseek/deepseek-r1:free",
+    });
 
-module.exports = { zeroShot, oneShot, multiShot, dynamicPrompt };
+    return res.status(200).send({ message: completion.choices[0].message });
+  } catch (error) {
+    console.error("Error in  COT prompt", error.message);
+    return res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+module.exports = { zeroShot, oneShot, multiShot, dynamicPrompt, COTPrompt };
