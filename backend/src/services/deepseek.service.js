@@ -24,5 +24,32 @@ const zeroShot = async (req, res) => {
     return res.status(500).send({ message: "Internal server error" });
   }
 };
+const oneShot = async (req, res) => {
+  try {
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: `
+          Example:  
+Text: 'I love this movie!'  
+Sentiment: Positive  
 
-module.exports = { zeroShot };
+Now classify this text:  
+Text: "This food tastes terrible."  
+Sentiment:
+
+          `,
+        },
+      ],
+      model: "deepseek/deepseek-r1:free",
+    });
+
+    return res.status(200).send({ message: completion.choices[0].message });
+  } catch (error) {
+    console.error("Error in one shot", error.message);
+    return res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+module.exports = { zeroShot, oneShot };
