@@ -5,6 +5,7 @@ const {
   multiShot,
   dynamicPrompt,
   COTPrompt,
+  SystemUserPrompt,
 } = require("./src/services/deepseek.service");
 require("dotenv").config();
 
@@ -27,5 +28,6 @@ app.get("/oneShot", oneShot);
 app.get("/multiShot", multiShot);
 app.get("/dynamicPrompt", dynamicPrompt);
 app.get("/COTPrompt", COTPrompt);
+app.get("/systemUserPrompt", SystemUserPrompt);
 
 module.exports = app;

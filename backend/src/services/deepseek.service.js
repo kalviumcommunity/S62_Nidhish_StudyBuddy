@@ -127,5 +127,35 @@ Explain your reasoning step by step.
     return res.status(500).send({ message: "Internal server error" });
   }
 };
+const SystemUserPrompt = async (req, res) => {
+  try {
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a helpful travel assistant that always responds politely and gives concise answers.",
+        },
+        {
+          role: "user",
+          content: "Find me the cheapest flight from Delhi to Mumbai tomorrow.",
+        },
+      ],
+      model: "deepseek/deepseek-r1:free",
+    });
 
-module.exports = { zeroShot, oneShot, multiShot, dynamicPrompt, COTPrompt };
+    return res.status(200).send({ message: completion.choices[0].message });
+  } catch (error) {
+    console.error("Error in  System and User prompt", error.message);
+    return res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+module.exports = {
+  zeroShot,
+  oneShot,
+  multiShot,
+  dynamicPrompt,
+  COTPrompt,
+  SystemUserPrompt,
+};
